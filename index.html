@@ -264,9 +264,31 @@ tr.holiday-row:hover td{background:var(--surface3)!important}
 .ai-refresh-btn{background:var(--gold-gradient);border:none;border-radius:var(--radius-pill);padding:4px 14px;font-size:11px;font-weight:600;color:var(--accent-text);cursor:pointer;transition:all .2s;white-space:nowrap;box-shadow:0 2px 8px rgba(201,146,10,0.25)}
 .ai-refresh-btn:hover{opacity:.9;transform:translateY(-1px)}
 .ai-refresh-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.ai-insight-body{padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text);min-height:56px;white-space:pre-wrap}
-.ai-insight-body.loading{color:var(--text3);font-style:italic}
+.ai-insight-body{padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text);min-height:56px}
+.ai-insight-body.loading{color:var(--text3);font-style:italic;display:flex;align-items:center;gap:8px}
 .ai-insight-body.empty{color:var(--text3);font-style:italic}
+.ai-score-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px 14px;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.ai-score-ring{flex-shrink:0;width:52px;height:52px;position:relative}
+.ai-score-ring svg{transform:rotate(-90deg)}
+.ai-score-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--accent2)}
+.ai-score-info{flex:1;min-width:0}
+.ai-score-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.ai-score-headline{font-size:14px;font-weight:700;color:var(--text);margin-top:2px;line-height:1.3}
+.ai-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.ai-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--radius-pill);font-size:11px;font-weight:600;white-space:nowrap}
+.ai-chip.good{background:rgba(34,197,94,0.13);color:#4ade80;border:1px solid rgba(34,197,94,0.25)}
+.ai-chip.warn{background:rgba(251,146,60,0.13);color:#fb923c;border:1px solid rgba(251,146,60,0.25)}
+.ai-chip.bad{background:rgba(248,113,113,0.13);color:#f87171;border:1px solid rgba(248,113,113,0.25)}
+.ai-chip.gold{background:rgba(200,150,12,0.13);color:var(--accent2);border:1px solid rgba(200,150,12,0.25)}
+.ai-chip.purple{background:rgba(167,139,250,0.13);color:#a78bfa;border:1px solid rgba(167,139,250,0.25)}
+.ai-chip.blue{background:rgba(96,165,250,0.13);color:#60a5fa;border:1px solid rgba(96,165,250,0.25)}
+.ai-insight-rows{display:flex;flex-direction:column;gap:8px}
+.ai-row{display:flex;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--glass)}
+.ai-row-icon{font-size:16px;flex-shrink:0;line-height:1.4}
+.ai-row-text{flex:1;font-size:12px;line-height:1.55;color:var(--text2)}
+.ai-row-text strong{color:var(--text);font-weight:600}
+.ai-tip{margin-top:12px;padding:10px 13px;border-radius:var(--radius-sm);background:linear-gradient(135deg,rgba(200,150,12,0.10),rgba(240,193,48,0.05));border:1px solid rgba(200,150,12,0.20);font-size:12px;color:var(--text2);line-height:1.5}
+.ai-tip strong{color:var(--accent2)}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(70px);background:rgba(30,18,0,0.92);border:1px solid var(--glass-border);color:var(--accent2);padding:10px 20px;border-radius:var(--radius-pill);font-size:13px;font-weight:500;opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:9999;white-space:nowrap;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
@@ -332,6 +354,7 @@ select{font-size:13px;padding:7px 10px;border:1px solid var(--border);border-rad
 select:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(245,184,32,0.12)}
 input[type="number"]{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-xs);font-family:'Inter',sans-serif;transition:border-color .2s}
 input[type="number"]:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(245,184,32,0.12)}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -409,7 +432,7 @@ input[type="number"]:focus{outline:none;border-color:var(--accent2);box-shadow:0
         <div class="ai-insight-title">✨ AI Insight</div>
         <button class="ai-refresh-btn" id="aiRefreshBtn" onclick="loadAIInsight()">↻ Refresh</button>
       </div>
-      <div class="ai-insight-body empty" id="aiInsightBody">I-click ang Refresh para makita ang AI analysis ng buwan.</div>
+      <div class="ai-insight-body empty" id="aiInsightBody">I-click ang Refresh para makita ang iyong attendance insight.</div>
     </div>
   </div>
 </div>
@@ -470,7 +493,6 @@ input[type="number"]:focus{outline:none;border-color:var(--accent2);box-shadow:0
         <div class="rate-field"><label>Daily rate</label><input type="number" id="rateDaily" value="642.54" step="0.01" oninput="renderSalary()"/></div>
         <div class="rate-field"><label>OT/hr — Day shift</label><input type="number" id="rateOTDay" value="108.43" step="0.01" oninput="renderSalary()"/></div>
         <div class="rate-field"><label>OT/hr — Night shift</label><input type="number" id="rateOTNight" value="130.11" step="0.01" oninput="renderSalary()"/></div>
-        <div class="rate-field"><label>Night diff/hr</label><input type="number" id="rateNSD" value="16.06" step="0.01" oninput="renderSalary()"/></div>
         <div class="rate-field"><label>Sunday OT/hr 🟠</label><input type="number" id="rateOTSunday" value="130.11" step="0.01" oninput="renderSalary()"/></div>
       </div>
     </div>
@@ -480,7 +502,7 @@ input[type="number"]:focus{outline:none;border-color:var(--accent2);box-shadow:0
     </div>
     <div class="table-wrap">
       <table id="salaryTable" style="font-size:12px">
-        <thead><tr style="background:var(--surface2)"><th>Description</th><th style="text-align:right">Qty</th><th style="text-align:right">Rate</th><th style="text-align:right">Amount</th><th style="width:28px"></th></tr></thead>
+        <thead><tr style="background:var(--surface2)"><th style="width:auto">Description</th><th style="text-align:right;width:60px">Qty</th><th style="text-align:right;width:80px">Rate</th><th style="text-align:right;width:90px">Amount</th><th style="width:24px"></th></tr></thead>
         <tbody id="salaryBody"></tbody>
         <tfoot id="salaryFoot"></tfoot>
       </table>
@@ -640,24 +662,24 @@ function setShiftData(o){localStorage.setItem(shiftKey(viewYear,viewMonth),JSON.
 
 /* ── HELPERS ── */
 function strToMin(s){if(!s)return null;const[h,m]=s.split(':').map(Number);return h*60+m}
+// Truncate time string to nearest hour (floor minutes) — minutes are not paid
+function floorHour(s){if(!s)return null;const[h]=s.split(':').map(Number);return h+':00'}
 function calcMinutes(tin,tout){if(!tin||!tout)return null;let d=strToMin(tout)-strToMin(tin);if(d<0)d+=24*60;return d}
 // Returns net work minutes after deducting 1hr break if shift overlaps the break window
+// Minutes in time-in/out are floored (truncated) — only whole hours counted
 function calcNetMinutes(tin,tout){
   if(!tin||!tout)return null;
-  const raw=calcMinutes(tin,tout);
+  // Floor both times to the hour — minutes not counted in salary
+  const tinF=floorHour(tin);
+  const toutF=floorHour(tout);
+  const raw=calcMinutes(tinF,toutF);
   if(raw==null)return null;
-  const inM=strToMin(tin);
-  const shift=getShiftForEntry(tin);
-  // Day shift break: 12:00–13:00 (720–780)
-  // Night shift break: 00:00–01:00 (0–60), i.e. crosses midnight
+  const inM=strToMin(tinF);
+  const shift=getShiftForEntry(tin); // use original tin for shift detection
   if(shift==='night'){
-    // Night: 19:00→04:00, break at 00:00–01:00
-    // Only deduct if worked at least past midnight (raw > 5hrs = 300min from 19:00)
     if(raw>300)return raw-60;
     return raw;
   } else {
-    // Day: break 12:00–13:00 (720–780min from midnight)
-    // Deduct only if time-in is before 13:00 AND time-out is after 12:00
     const outM=(inM+raw)%(24*60);
     const crossesBreak=inM<780&&outM>720;
     if(crossesBreak)return raw-60;
@@ -988,20 +1010,19 @@ function renderSalary(){
   const rD=parseFloat(document.getElementById('rateDaily').value)||642.54;
   const rOD=parseFloat(document.getElementById('rateOTDay').value)||108.43;
   const rON=parseFloat(document.getElementById('rateOTNight').value)||130.11;
-  const rNSD=parseFloat(document.getElementById('rateNSD').value)||16.06;
   const rOS=parseFloat(document.getElementById('rateOTSunday').value)||130.11;
   const entries=getCutoffEntries(cut).filter(e=>!e.absent&&e.timeIn);
-  let dDay=0,dNight=0,dSun=0,otDay=0,otNight=0,otSun=0,nsd=0;
+  let dDay=0,dNight=0,dSun=0,otDay=0,otNight=0,otSun=0;
   entries.forEach(e=>{
     if(isSunday(e.date)&&!e.sundayOT)return;
     if(isSunday(e.date)){const t=calcHours(e.timeIn,e.timeOut)||0;otSun+=t;dSun++;return;}
     const shift=getShiftForEntry(e.timeIn),ot=calcOT(e.timeIn,e.timeOut);
-    if(shift==='night'){dNight++;otNight+=ot;const t=calcHours(e.timeIn,e.timeOut)||0;nsd+=Math.min(t,9);}
+    if(shift==='night'){dNight++;otNight+=ot;}
     else{dDay++;otDay+=ot;}
   });
-  const basicPay=(dDay+dNight)*rD,otPayDay=otDay*rOD,otPayNight=otNight*rON,otPaySun=otSun*rOS,nsdPay=nsd*rNSD;
+  const basicPay=(dDay+dNight)*rD,otPayDay=otDay*rOD,otPayNight=otNight*rON,otPaySun=otSun*rOS;
   const earnItems=getSalEarnItems(cut),customEarnTotal=earnItems.reduce((s,it)=>s+it.amount,0);
-  const totalEarnings=basicPay+otPayDay+otPayNight+otPaySun+nsdPay+customEarnTotal;
+  const totalEarnings=basicPay+otPayDay+otPayNight+otPaySun+customEarnTotal;
   const fmt=n=>'₱'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
   const autoRows=[
     {label:'Basic Pay (Day)',qty:dDay,rate:rD,amt:dDay*rD},
@@ -1009,12 +1030,11 @@ function renderSalary(){
     {label:'OT Pay (Day)',qty:otDay.toFixed(2)+'h',rate:rOD,amt:otPayDay},
     {label:'OT Pay (Night)',qty:otNight.toFixed(2)+'h',rate:rON,amt:otPayNight},
     {label:'🟠 Sunday OT',qty:otSun.toFixed(2)+'h ('+dSun+'d)',rate:rOS,amt:otPaySun},
-    {label:'Night Diff',qty:nsd.toFixed(2)+'h',rate:rNSD,amt:nsdPay},
   ].filter(r=>r.amt>0||(typeof r.qty==='number'&&r.qty>0));
   const autoHtml=autoRows.map(r=>`<tr style="border-bottom:1px solid var(--border)"><td style="padding:7px 8px">${r.label}</td><td style="padding:7px 8px;text-align:right;color:var(--text2)">${r.qty}</td><td style="padding:7px 8px;text-align:right;color:var(--text2)">${fmt(r.rate)}</td><td style="padding:7px 8px;text-align:right;font-weight:500">${fmt(r.amt)}</td><td></td></tr>`).join('');
   const custHtml=earnItems.map((it,i)=>`<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 8px"><input type="text" value="${it.label.replace(/"/g,'&quot;')}" onchange="updateSalEarnItem('${cut}',${i},'label',this.value)" style="font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--text);width:140px"/></td><td style="padding:6px 8px;text-align:right;color:var(--text3)">—</td><td style="padding:6px 8px;text-align:right;color:var(--text3)">custom</td><td style="padding:6px 8px;text-align:right"><input type="number" value="${it.amount}" step="0.01" onchange="updateSalEarnItem('${cut}',${i},'amount',parseFloat(this.value)||0)" style="font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--text);width:80px;text-align:right"/></td><td style="padding:6px 8px;text-align:center"><button onclick="removeSalEarnItem('${cut}',${i})" style="border:none;background:none;color:var(--red);cursor:pointer;font-size:15px">×</button></td></tr>`).join('');
   document.getElementById('salaryBody').innerHTML=autoHtml+custHtml;
-  document.getElementById('salaryFoot').innerHTML=`<tr style="background:var(--surface2);font-weight:700"><td colspan="4" style="padding:9px 8px">Total Gross Earnings</td><td style="padding:9px 8px;text-align:right;color:var(--green)">${fmt(totalEarnings)}</td></tr>`;
+  document.getElementById('salaryFoot').innerHTML=`<tr style="background:var(--surface2);font-weight:700"><td colspan="3" style="padding:9px 8px">Total Gross Earnings</td><td style="padding:9px 8px;text-align:right;color:var(--green)">${fmt(totalEarnings)}</td><td></td></tr>`;
   const items=getSalItems(cut);let totalDed=0,totalAdd=0;
   document.getElementById('otherItemsBody').innerHTML=items.map((it,i)=>{
     if(it.type==='deduction')totalDed+=it.amount;else totalAdd+=it.amount;
@@ -1131,34 +1151,183 @@ function clearAllData(){
   toDelete.forEach(k=>localStorage.removeItem(k));render();renderStorageInfo();showToast('All data cleared');
 }
 
-/* ── AI INSIGHT ── */
-async function loadAIInsight(){
+/* ── OFFLINE SMART INSIGHT ENGINE ── */
+function loadAIInsight(){
   const el=document.getElementById('aiInsightBody');
   const btn=document.getElementById('aiRefreshBtn');
-  el.className='ai-insight-body loading';
-  el.textContent='✨ Analyzing your attendance…';
   btn.disabled=true;
-  const entries=getEntries(),sd=getShiftData();
-  if(!entries.length){
-    el.className='ai-insight-body empty';
-    el.textContent='Walang entry pa para sa buwan na ito.';
-    btn.disabled=false;return;
-  }
-  let ctx=`Attendance data for ${MONTHS[viewMonth]} ${viewYear}:\n`;
-  entries.sort((a,b)=>a.date.localeCompare(b.date)).forEach(e=>{
-    ctx+=`${e.date}(${dayName(e.date)})[${sd[e.date]||'?'} shift]:in=${e.timeIn||'none'},out=${e.timeOut||'none'},status=${getStatus(e.timeIn,e.timeOut,e.absent)},hrs=${hoursStr(e.timeIn,e.timeOut)}\n`;
-  });
-  const prompt=ctx+'\nBigyan mo ako ng maikling attendance insight para sa buwang ito. Isama ang: (1) overall performance summary, (2) mga kapansin-pansing pattern tulad ng laging late o maraming OT, (3) isang friendly tip o encouragement. Maging concise — 3-4 sentences lang. Plain text, walang bullet points.';
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:'You are a friendly Filipino attendance assistant. Give warm, concise insights in a mix of Filipino and English (Taglish). Plain text only, no markdown.',messages:[{role:'user',content:prompt}]})});
-    const d=await res.json();
+  el.className='ai-insight-body loading';
+  el.innerHTML='<span style="font-size:18px;animation:spin 1s linear infinite;display:inline-block">⏳</span> Sinusuri ang iyong buwan…';
+
+  setTimeout(()=>{
+    const allEntries=getEntries();
+    if(!allEntries.length){
+      el.className='ai-insight-body empty';
+      el.innerHTML='Walang entry pa para sa buwang ito. Mag-log muna! 📋';
+      btn.disabled=false;return;
+    }
+
+    // ── STATS GATHERING ──
+    let present=0,late=0,absent=0,halfDay=0,sundayOT=0;
+    let totalHrs=0,totalOT=0,nightCount=0,dayCount=0;
+    let lateMinutes=[],otDays=[],curConsec=0,maxConsec=0;
+    let earlyDays=0; // came in early (before shift start)
+    let longestDay=0,longestDayDate='';
+
+    const sorted=allEntries.slice().sort((a,b)=>a.date.localeCompare(b.date));
+    sorted.forEach(e=>{
+      if(e.absent){absent++;curConsec=0;return;}
+      if(e.sundayOT){
+        sundayOT++;
+        const h=calcHours(e.timeIn,e.timeOut)||0;
+        totalHrs+=h;totalOT+=h;
+        return;
+      }
+      const st=getStatus(e.timeIn,e.timeOut,e.absent);
+      const h=calcHours(e.timeIn,e.timeOut)||0;
+      const ot=calcOT(e.timeIn,e.timeOut)||0;
+      if(st==='half-day'){halfDay++;curConsec=0;}
+      else if(st==='late'){
+        late++;curConsec++;
+        if(curConsec>maxConsec)maxConsec=curConsec;
+        const shift=getShiftForEntry(e.timeIn);
+        const startLim=shift==='night'?strToMin('19:00'):strToMin('07:00');
+        const lm=Math.max(0,strToMin(e.timeIn)-startLim-LATE_GRACE);
+        if(lm>0)lateMinutes.push(lm);
+      } else {
+        curConsec=0;
+        // check if early
+        if(e.timeIn){
+          const shift=getShiftForEntry(e.timeIn);
+          const startLim=shift==='night'?strToMin('19:00'):strToMin('07:00');
+          if(strToMin(e.timeIn)<startLim-5)earlyDays++;
+        }
+      }
+      if(st==='present'||st==='late')present++;
+      totalHrs+=h;
+      if(ot>0){totalOT+=ot;otDays.push(ot);}
+      if(h>longestDay){longestDay=h;longestDayDate=e.date;}
+      const sh=getShiftForEntry(e.timeIn);
+      if(sh==='night')nightCount++;else dayCount++;
+    });
+
+    const workDays=present+late+halfDay;
+    const totalDays=workDays+absent;
+    const attendanceRate=totalDays>0?Math.round((workDays/totalDays)*100):0;
+    const avgLateMin=lateMinutes.length>0?Math.round(lateMinutes.reduce((a,b)=>a+b,0)/lateMinutes.length):0;
+    const avgHrs=workDays>0?(totalHrs/workDays).toFixed(1):0;
+    const score=Math.min(100,Math.round(
+      attendanceRate*0.4 +
+      (late===0?20:Math.max(0,20-(late*3))) +
+      (absent===0?20:Math.max(0,20-(absent*5))) +
+      Math.min(20,(totalOT/2))
+    ));
+
+    // ── SCORE RING ──
+    const scoreColor=score>=85?'#4ade80':score>=65?'#f0c130':'#f87171';
+    const scoreLabel=score>=90?'Excellent! 🏆':score>=80?'Magaling! 🌟':score>=65?'Okay lang 👍':score>=50?'Pwede pa 💪':'Kailangan pang i-improve 🙏';
+    const headline=score>=90?'Napakaganda ng attendance mo ngayong '+MONTHS[viewMonth]+'!':
+      score>=80?'Solid performance mo ngayong buwan!':
+      score>=65?'May room for improvement pa tayo.':
+      'Maraming kulang ngayong buwan — next month, mas magaling na!';
+    const r=24,circ=2*Math.PI*r;
+    const dash=(score/100)*circ;
+    const scoreRing=`<div class="ai-score-row">
+      <div class="ai-score-ring">
+        <svg width="52" height="52" viewBox="0 0 52 52">
+          <circle cx="26" cy="26" r="${r}" fill="none" stroke="rgba(200,150,12,0.15)" stroke-width="4"/>
+          <circle cx="26" cy="26" r="${r}" fill="none" stroke="${scoreColor}" stroke-width="4"
+            stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}" stroke-linecap="round"/>
+        </svg>
+        <div class="ai-score-val">${score}</div>
+      </div>
+      <div class="ai-score-info">
+        <div class="ai-score-label">Performance Score</div>
+        <div class="ai-score-headline">${headline}</div>
+      </div>
+    </div>`;
+
+    // ── CHIPS ──
+    const chips=[];
+    chips.push(`<span class="ai-chip ${attendanceRate===100?'good':attendanceRate>=85?'gold':attendanceRate>=70?'warn':'bad'}">📅 ${attendanceRate}% attendance</span>`);
+    if(late>0)chips.push(`<span class="ai-chip ${late>=5?'bad':'warn'}">⏰ ${late}x late</span>`);
+    if(absent>0)chips.push(`<span class="ai-chip bad">❌ ${absent} absent</span>`);
+    if(totalOT>0)chips.push(`<span class="ai-chip purple">💼 ${totalOT.toFixed(1)}h OT</span>`);
+    if(sundayOT>0)chips.push(`<span class="ai-chip gold">🟠 ${sundayOT} Sunday OT</span>`);
+    if(halfDay>0)chips.push(`<span class="ai-chip warn">🌗 ${halfDay} half-day</span>`);
+    if(nightCount>0&&dayCount>0)chips.push(`<span class="ai-chip blue">🌙 Mixed shift</span>`);
+    else if(nightCount>0)chips.push(`<span class="ai-chip blue">🌙 Night shift</span>`);
+    if(earlyDays>0)chips.push(`<span class="ai-chip good">⚡ ${earlyDays}x early bird</span>`);
+    const chipsHtml=`<div class="ai-chips">${chips.join('')}</div>`;
+
+    // ── INSIGHT ROWS ──
+    const rows=[];
+
+    // Attendance overview
+    if(attendanceRate===100){
+      rows.push({icon:'🏅',text:`<strong>Perfect attendance!</strong> ${workDays} araw kang nag-trabaho this month — walang absent, walang kulang. Ibang klase ka talaga!`});
+    } else {
+      const missedStr=absent>0&&halfDay>0?`${absent} absent at ${halfDay} half-day`:absent>0?`${absent} araw absent`:`${halfDay} half-day`;
+      rows.push({icon:'📊',text:`<strong>${workDays} araw</strong> kang nagtrabaho ngayong ${MONTHS[viewMonth]} (${attendanceRate}%). May ${missedStr} ka ngayong buwan.`});
+    }
+
+    // Late analysis
+    if(late===0){
+      rows.push({icon:'✅',text:`<strong>On-time ka sa lahat!</strong> ${present+halfDay} araw at walang late — great discipline!`});
+    } else if(maxConsec>=3){
+      rows.push({icon:'⏰',text:`<strong>${late} beses kang late</strong> ngayong buwan${avgLateMin>0?' (average '+avgLateMin+' mins)':''}, at may <strong>${maxConsec} consecutive days</strong> na sunod-sunod. Subukan mong mag-sleep nang mas maaga o mag-set ng mas maraming alarm.`});
+    } else if(late>=5){
+      rows.push({icon:'⏰',text:`<strong>${late} beses kang late</strong> ngayong ${MONTHS[viewMonth]}${avgLateMin>30?' — average '+avgLateMin+' mins ang pagkaka-late mo':''}.  Consistent na pattern ito — worth checking kung okay ang commute mo.`});
+    } else {
+      rows.push({icon:'⏰',text:`${late} beses kang late ngayong buwan${avgLateMin>0?' (average '+avgLateMin+' mins)':''}. ${late===1?'Isang beses lang — okay pa rin!':'Kaunti pa lang, kaya mo pang i-zero ito next month!'}`});
+    }
+
+    // OT analysis
+    if(totalOT>=20){
+      rows.push({icon:'💼',text:`<strong>${totalOT.toFixed(1)} oras na OT</strong> mo ngayong buwan sa ${otDays.length} araw — napaka-daming OT! Malaki ang extra income, pero mag-ingat din sa burnout. Rest is important din. 🙏`});
+    } else if(totalOT>=8){
+      rows.push({icon:'💼',text:`<strong>${totalOT.toFixed(1)} oras ang OT mo</strong> sa ${otDays.length} araw ngayong ${MONTHS[viewMonth]}. Solid extra income — keep it up kung kaya pa! 💰`});
+    } else if(totalOT>0){
+      rows.push({icon:'💼',text:`May <strong>${totalOT.toFixed(1)} oras na OT</strong> ka ngayong buwan sa ${otDays.length} araw — okay na extra! Every hour counts.`});
+    } else {
+      rows.push({icon:'💼',text:`Walang OT ngayong buwan. Kung may pagkakataon, pwedeng mag-OT para sa extra income.`});
+    }
+
+    // Hours quality
+    if(parseFloat(avgHrs)>0){
+      const quality=parseFloat(avgHrs)>=8.5?'Consistent ka sa mahabang oras ng trabaho':parseFloat(avgHrs)>=8?'Kumpleto ang oras mo sa karamihan ng araw':'Medyo maikli ang average hours mo';
+      rows.push({icon:'⌚',text:`<strong>Average ${avgHrs}h/day</strong> ang iyong work hours ngayong buwan. ${quality}.${longestDayDate?' Pinakamahaba: '+longestDay.toFixed(1)+'h ('+dayName(longestDayDate)+').':''}`});
+    }
+
+    // Sunday OT
+    if(sundayOT>0){
+      rows.push({icon:'🟠',text:`<strong>${sundayOT} Sunday OT</strong> ka ngayong buwan — kahit rest day, nagtrabaho ka pa rin. Super dedikado! Sana may oras ka pa rin para sa sarili mo.`});
+    }
+
+    // Shift pattern
+    if(nightCount>0&&dayCount>0){
+      rows.push({icon:'🌓',text:`<strong>Mixed shift</strong> ka ngayong buwan — ${dayCount} day at ${nightCount} night. Mag-ingat sa body clock shifts, lalo na sa pagbabago ng tulog.`});
+    } else if(nightCount>0){
+      rows.push({icon:'🌙',text:`<strong>Puro night shift</strong> ka ngayong ${MONTHS[viewMonth]}. Huwag kalimutang tulog nang maayos sa umaga at kumain ng maayos.`});
+    }
+
+    const rowsHtml=`<div class="ai-insight-rows">${rows.map(r=>`<div class="ai-row"><div class="ai-row-icon">${r.icon}</div><div class="ai-row-text">${r.text}</div></div>`).join('')}</div>`;
+
+    // ── TIP ──
+    const tips=[
+      late>=3?`<strong>💡 Tip:</strong> ${late} beses kang late — subukan mong mag-prepare ng gamit mo the night before para hindi mag-aaksaya ng oras sa umaga.`:null,
+      absent>=2?`<strong>💡 Tip:</strong> ${absent} absences mo ngayong buwan. Kung may health issue, huwag mag-atubiling mag-file ng sick leave nang maayos.`:null,
+      totalOT>=15?`<strong>💡 Tip:</strong> Grabe ang OT mo — ${totalOT.toFixed(1)} hours! Siguraduhing kumakain at natutulog nang sapat. Hindi sustainable ang ganito sa matagal na panahon.`:null,
+      earlyDays>=3?`<strong>💡 Tip:</strong> ${earlyDays} beses kang nakapasok nang maaga — great habit! Consistency is key, keep it going next month.`:null,
+      score>=90?`<strong>💡 Tip:</strong> Ang ganda ng score mo! Kung ganito ka rin next month, ikaw ang pinaka-solid sa team. 🏆`:null,
+      `<strong>💡 Tip:</strong> I-track ang bawat araw para makita ang progress mo buwan-buwan. Small improvements add up!`,
+    ].find(t=>t!==null);
+    const tipHtml=`<div class="ai-tip">${tips}</div>`;
+
     el.className='ai-insight-body';
-    el.textContent=(d.content&&d.content[0]&&d.content[0].text)||'Hindi nakakuha ng sagot.';
-  }catch(err){
-    el.className='ai-insight-body empty';
-    el.textContent='Hindi makonekta sa AI.';
-  }
-  btn.disabled=false;
+    el.innerHTML=scoreRing+chipsHtml+rowsHtml+tipHtml;
+    btn.disabled=false;
+  },500);
 }
 
 /* ── INIT ── */
