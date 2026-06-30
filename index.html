@@ -11,51 +11,48 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Attendance">
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 /* ── THEME TOKENS ── */
 /* Premium Black × Gold palette — inspired by reference UI */
 /* Gold scale: #F0C130 (vivid) · #C8960C (mid) · #8B6508 (deep) · #F5E09A (pale cream) */
 :root,[data-theme="day"]{
-  --bg-from:#111008;
-  --bg-to:#080600;
-  --bg:linear-gradient(160deg,#181206 0%,#080600 100%);
-  --surface:rgba(240,193,48,0.07);
-  --surface-solid:#141006;
-  --surface2:rgba(240,193,48,0.13);
-  --surface3:rgba(240,193,48,0.20);
-  --glass:rgba(240,193,48,0.05);
-  --glass-border:rgba(200,150,12,0.32);
+  --bg-from:#FFFFFF;
+  --bg-to:#FBF7EC;
+  --bg:linear-gradient(160deg,#FFFFFF 0%,#FBF7EC 100%);
+  --surface:rgba(200,150,12,0.06);
+  --surface-solid:#FFFFFF;
+  --surface2:rgba(200,150,12,0.10);
+  --surface3:rgba(200,150,12,0.16);
+  --glass:rgba(200,150,12,0.05);
+  --glass-border:rgba(200,150,12,0.30);
   --border:rgba(200,150,12,0.22);
-  --border2:rgba(200,150,12,0.48);
-  --text:#F5E09A;
-  --text2:#C8960C;
-  --text3:#7A5C08;
+  --border2:rgba(200,150,12,0.42);
+  --text:#3A2A05;
+  --text2:#8B6508;
+  --text3:#B89640;
   --accent:#C8960C;
-  --accent2:#F0C130;
-  --accent-hover:#D9AB1A;
-  --accent-text:#080600;
-  --accent-bg:rgba(200,150,12,0.14);
-  --gold-light:rgba(240,193,48,0.09);
+  --accent2:#A87808;
+  --accent-hover:#B6850A;
+  --accent-text:#FFFFFF;
+  --accent-bg:rgba(200,150,12,0.12);
+  --gold-light:rgba(200,150,12,0.08);
   --gold-mid:#C8960C;
-  --gold-dark:#F5E09A;
+  --gold-dark:#8B6508;
   --gold-gradient:linear-gradient(135deg,#8B6508 0%,#C8960C 25%,#F0C130 55%,#C8960C 80%,#8B6508 100%);
-  --night-bg:rgba(8,6,0,0.96);
-  --night-text:#F0C130;
-  --sun-bg:rgba(249,115,22,0.10);
-  --sun-border:rgba(249,115,22,0.35);
-  --sun-text:#FB923C;
-  --green:#22c55e;--green-bg:rgba(34,197,94,0.12);
-  --red:#f87171;--red-bg:rgba(248,113,113,0.12);
-  --purple:#a78bfa;
-  --shadow:0 4px 28px rgba(0,0,0,0.55),0 1px 4px rgba(0,0,0,0.4);
-  --shadow-sm:0 2px 12px rgba(0,0,0,0.4);
-  --shadow-gold:0 0 24px rgba(200,150,12,0.20);
+  --night-bg:rgba(255,255,255,0.96);
+  --night-text:#A87808;
+  --sun-bg:rgba(249,115,22,0.08);
+  --sun-border:rgba(249,115,22,0.30);
+  --sun-text:#C2570F;
+  --green:#16a34a;--green-bg:rgba(22,163,74,0.10);
+  --red:#dc2626;--red-bg:rgba(220,38,38,0.10);
+  --purple:#7c3aed;
+  --shadow:0 4px 24px rgba(150,110,10,0.10),0 1px 4px rgba(150,110,10,0.06);
+  --shadow-sm:0 2px 10px rgba(150,110,10,0.08);
+  --shadow-gold:0 0 20px rgba(200,150,12,0.12);
   --radius:16px;--radius-sm:12px;--radius-xs:8px;--radius-pill:999px;
 }
 [data-theme="night"]{
@@ -92,7 +89,7 @@
 }
 
 html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;transition:background .3s,color .3s}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;transition:background .3s,color .3s}
 
 /* ── LAYOUT ── */
 .app{max-width:960px;margin:0 auto;padding:20px 16px 100px}
@@ -176,9 +173,9 @@ tr.week-night.absent-row td{background:rgba(248,113,113,0.08)!important}
 tr.holiday-row:hover td{background:var(--surface3)!important}
 
 /* ── INPUTS ── */
-.time-input{width:86px;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface2);color:var(--text);font-family:'Inter',sans-serif;transition:border-color .2s}
+.time-input{width:86px;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface2);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;transition:border-color .2s}
 .time-input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(245,184,32,0.12)}
-.note-input{font-size:12px;padding:4px 8px;border:1px solid rgba(248,113,113,0.3);border-radius:var(--radius-xs);background:rgba(248,113,113,0.06);color:var(--red);font-family:'Inter',sans-serif;width:120px}
+.note-input{font-size:12px;padding:4px 8px;border:1px solid rgba(248,113,113,0.3);border-radius:var(--radius-xs);background:rgba(248,113,113,0.06);color:var(--red);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;width:120px}
 .note-input:focus{outline:none;border-color:rgba(248,113,113,0.6)}
 
 /* ── BADGES ── */
@@ -194,10 +191,10 @@ tr.holiday-row:hover td{background:var(--surface3)!important}
 .add-row{display:flex;gap:8px;align-items:flex-start;padding:14px 16px;background:var(--surface2);border-top:1px solid var(--border);flex-wrap:wrap}
 .add-row label{font-size:10px;color:var(--text3);font-weight:700;display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
 .add-field{display:flex;flex-direction:column}
-.add-row input[type="date"],.add-row input[type="time"]{font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;transition:border-color .2s}
+.add-row input[type="date"],.add-row input[type="time"]{font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;transition:border-color .2s}
 .add-row input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(245,184,32,0.12)}
 .add-row-btns{display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap}
-.add-row input[type="text"]{font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;width:140px}
+.add-row input[type="text"]{font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;width:140px}
 
 /* ── DEL BTN ── */
 .del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:3px 5px;border-radius:6px;transition:all .15s;line-height:1}
@@ -244,7 +241,7 @@ tr.holiday-row:hover td{background:var(--surface3)!important}
 /* ── SALARY ── */
 .rates-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
 .rate-field label{font-size:10px;color:var(--text3);display:block;margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-.rate-field input{width:100%;font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;transition:border-color .2s}
+.rate-field input{width:100%;font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;transition:border-color .2s}
 .rate-field input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(245,184,32,0.12)}
 
 /* ── IMPORT/EXPORT ── */
@@ -350,9 +347,9 @@ tr.holiday-row:hover td{background:var(--surface3)!important}
 /* ── MISC ── */
 .section-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;letter-spacing:-.2px}
 .divider{height:1px;background:var(--border);margin:16px 0}
-select{font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;transition:border-color .2s}
+select{font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-xs);background:var(--surface);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;transition:border-color .2s}
 select:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(245,184,32,0.12)}
-input[type="number"]{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-xs);font-family:'Inter',sans-serif;transition:border-color .2s}
+input[type="number"]{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-xs);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;transition:border-color .2s}
 input[type="number"]:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(245,184,32,0.12)}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
