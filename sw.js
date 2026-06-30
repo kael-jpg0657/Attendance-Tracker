@@ -1,10 +1,9 @@
-const CACHE_NAME = 'attendance-tracker-v1';
+const CACHE_NAME = 'attendance-tracker-v2';
 const ASSETS = [
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
+  './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
